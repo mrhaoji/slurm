@@ -307,10 +307,11 @@ scontrol_parse_res_options(int argc, char *argv[], const char *msg,
 				resv_msg_ptr->core_cnt[node_inx] =
 					strtol(tok, &endptr, 10);
 				if ((endptr == NULL) ||
-				   (endptr[0] != '\0') ||
-				   (tok[0] == '\0')) {
+				    (endptr[0] != '\0') ||
+				    (tok[0] == '\0')) {
 					exit_code = 1;
-					error("Invalid core count %s.  %s", argv[i], msg);
+					error("Invalid core count %s.  %s",
+					      argv[i], msg);
 					xfree(core_cnt);
 					return -1;
 				}

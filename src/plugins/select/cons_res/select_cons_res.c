@@ -2548,11 +2548,11 @@ bitstr_t *sequential_pick(bitstr_t *avail_bitmap, uint32_t node_cnt,
 	 *		- node_cnt is 0
 	 */
 
-	if ((node_cnt) && (core_cnt)) {
-		debug2("reserving %u cores per node in %d nodes",
-			cores_per_node, node_cnt);
+	if (node_cnt && core_cnt) {
 		total_core_cnt = core_cnt[0];
 		cores_per_node = core_cnt[0] / MAX(node_cnt, 1);
+		debug2("reserving %u cores per node in %d nodes",
+			cores_per_node, node_cnt);
 	}
 	if ((!node_cnt) && (core_cnt)) {
 		int num_nodes = bit_set_count(avail_bitmap);
@@ -2763,11 +2763,15 @@ extern bitstr_t * select_p_resv_test(bitstr_t *avail_bitmap, uint32_t node_cnt,
 		*core_bitmap = _make_core_bitmap_filtered(avail_bitmap, 0);
 	
 	rem_nodes = node_cnt;
-	rem_cores = core_cnt[0];
 
 	/* Assuming symmetric cluster */
-	if(core_cnt)
+	if (core_cnt) {
+		rem_cores = core_cnt[0];
 		cores_per_node = core_cnt[0] / MAX(node_cnt, 1);
+	} else {
+		rem_cores = 0;
+		cores_per_node = 0;
+	}
 
 	/* Construct a set of switch array entries,
 	 * use the same indexes as switch_record_table in slurmctld */
@@ -2870,11 +2874,11 @@ extern bitstr_t * select_p_resv_test(bitstr_t *avail_bitmap, uint32_t node_cnt,
 		for (j=0; j<switch_record_cnt; j++) {
 			if (switches_node_cnt[j] == 0)
 				continue;
-			if(core_cnt)
+			if (core_cnt) {
 				sufficient = 
 					(switches_node_cnt[j] >= rem_nodes) &&
 					(switches_cpu_cnt[j] >= core_cnt[0]);
-			else
+			} else
 				sufficient = switches_node_cnt[j] >= rem_nodes;
 			/* If first possibility OR */
 			/* first set large enough for request OR */
