@@ -1,0 +1,3 @@
+#!/bin/bash
+#
+slurm/sbin/./slurmctld -Dc

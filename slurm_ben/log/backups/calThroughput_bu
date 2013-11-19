@@ -1,0 +1,4 @@
+#!/bin/bash
+#
+awk '{sum=sum+$1}{total=sum*0.000001}{jobs=100}{tp=jobs/total}END{printf("%f sec\n %f jobs/sec\n",total,tp) }' /home/hchen71/slurm/log/output >> /home/hchen71/slurm/log/result
+cat result

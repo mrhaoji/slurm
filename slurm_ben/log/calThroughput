@@ -1,0 +1,4 @@
+#!/bin/bash
+#
+awk '{max=0}{if($1>max) max=$1 fi}{tp=50/max*1000000}END{printf("%f jobs/sec\n",tp) }' /home/hchen71/slurm/log/output >> /home/hchen71/slurm/log/result
+cat result
